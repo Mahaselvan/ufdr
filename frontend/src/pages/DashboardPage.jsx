@@ -1,0 +1,62 @@
+import { useEffect, useState } from "react";
+import { fetchDashboard } from "../api/client";
+import StatCard from "../components/StatCard";
+
+function DashboardPage() {
+  const [data, setData] = useState(null);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    fetchDashboard()
+      .then(setData)
+      .catch((err) => setError(err.message));
+  }, []);
+
+  if (error) {
+    return <p className="error">Failed to load dashboard: {error}</p>;
+  }
+
+  const metrics = data?.metrics || {};
+
+  return (
+    <section className="page">
+      <header className="page-header">
+        <h1>Investigation Dashboard</h1>
+        <p>Overview of digital forensic evidence and alerts</p>
+      </header>
+
+      {data?.isDemoData && (
+        <div className="notice warning">
+          Dashboard is currently showing seeded demo data from `data/sample-ufdr.json`.
+        </div>
+      )}
+
+      <div className="card-grid">
+        <StatCard title="Total Records" value={metrics.totalRecords || 0} subtitle="Extracted from UFDR" />
+        <StatCard title="Total Chats" value={metrics.totalChats || 0} subtitle="WhatsApp, Telegram, Signal" />
+        <StatCard title="Foreign Communications" value={metrics.foreignCount || 0} subtitle="International numbers detected" tone="blue" />
+        <StatCard title="Crypto-Flagged Evidence" value={metrics.cryptoCount || 0} subtitle="Wallet/crypto references" tone="amber" />
+        <StatCard title="Long Calls" value={metrics.longCalls || 0} subtitle="Calls above 10 minutes" tone="red" />
+        <StatCard title="Unique Contacts" value={metrics.uniqueFromContacts || 0} subtitle="Distinct source numbers" tone="green" />
+      </div>
+
+      <section className="panel">
+        <h3>Recent Activity</h3>
+        <div className="activity-list">
+          {(data?.recentActivity || []).map((item) => (
+            <div className="activity-item" key={item.id}>
+              <div>
+                <strong>{item.title}</strong>
+                <p>{item.detail}</p>
+              </div>
+              <span>{new Date(item.timestamp).toLocaleString()}</span>
+            </div>
+          ))}
+          {!data?.recentActivity?.length && <p>No records yet. Upload UFDR to begin.</p>}
+        </div>
+      </section>
+    </section>
+  );
+}
+
+export default DashboardPage;

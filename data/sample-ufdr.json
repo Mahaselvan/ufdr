@@ -1,0 +1,95 @@
+[
+  {
+    "type": "chat",
+    "from": "+91-9876543210",
+    "to": "+1-555-0123",
+    "timestamp": "2026-02-16T10:00:00Z",
+    "content": "Send 0.8 BTC to bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh after confirmation",
+    "country": "IN",
+    "source": "WhatsApp"
+  },
+  {
+    "type": "chat",
+    "from": "+44-20-7946",
+    "to": "+91-9876543210",
+    "timestamp": "2026-02-16T11:00:00Z",
+    "content": "Use this wallet 1BoatSLRHtKNngkdXEeobR76b53LETtpyT",
+    "country": "GB",
+    "source": "Telegram"
+  },
+  {
+    "type": "call",
+    "from": "+91-9876543210",
+    "to": "+971-50-123",
+    "timestamp": "2026-02-15T09:30:00Z",
+    "content": "Long international call",
+    "durationSeconds": 980,
+    "country": "AE",
+    "source": "Call Log"
+  },
+  {
+    "type": "chat",
+    "from": "+91-8765432109",
+    "to": "+91-9876543210",
+    "timestamp": "2026-02-14T19:20:00Z",
+    "content": "Meeting moved to tomorrow. Share docs at https://secure-transfer.example/a1",
+    "country": "IN",
+    "source": "Signal"
+  },
+  {
+    "type": "contact",
+    "from": "+91-7654321098",
+    "to": "",
+    "timestamp": "2026-02-14T12:10:00Z",
+    "content": "Rafiq - Dubai",
+    "country": "AE",
+    "source": "Contacts"
+  },
+  {
+    "type": "call",
+    "from": "+1-555-0123",
+    "to": "+91-9876543210",
+    "timestamp": "2026-02-13T08:30:00Z",
+    "content": "Short call",
+    "durationSeconds": 130,
+    "country": "US",
+    "source": "Call Log"
+  },
+  {
+    "type": "chat",
+    "from": "+91-6543210987",
+    "to": "+91-9876543210",
+    "timestamp": "2026-02-12T15:45:00Z",
+    "content": "Transfer complete. wallet updated",
+    "country": "IN",
+    "source": "WhatsApp"
+  },
+  {
+    "type": "chat",
+    "from": "+91-9876543210",
+    "to": "+44-20-7946",
+    "timestamp": "2026-02-11T17:00:00Z",
+    "content": "Next transfer in USDT this week",
+    "country": "IN",
+    "source": "Telegram"
+  },
+  {
+    "type": "call",
+    "from": "+91-8765432109",
+    "to": "+91-9876543210",
+    "timestamp": "2026-02-10T18:00:00Z",
+    "content": "Routine coordination",
+    "durationSeconds": 620,
+    "country": "IN",
+    "source": "Call Log"
+  },
+  {
+    "type": "chat",
+    "from": "+91-9876543210",
+    "to": "+971-50-123",
+    "timestamp": "2026-02-10T18:30:00Z",
+    "content": "Use backup channel and remove old messages",
+    "country": "AE",
+    "source": "Signal"
+  }
+]

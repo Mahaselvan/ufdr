@@ -1,0 +1,174 @@
+import { useEffect, useState } from "react";
+import { fetchQuerySources, fetchReports, generateReport } from "../api/client";
+
+const templates = [
+  "Full Investigation Report",
+  "Executive Summary",
+  "Evidence List Only",
+  "Link Analysis Report"
+];
+
+function ReportsPage({ officer }) {
+  const [selectedTemplate, setSelectedTemplate] = useState(templates[0]);
+  const [format, setFormat] = useState("PDF");
+  const [reports, setReports] = useState([]);
+  const [summary, setSummary] = useState({ totalRecords: 0, cryptoCount: 0, foreignCount: 0 });
+  const [status, setStatus] = useState("");
+  const [error, setError] = useState("");
+  const [sources, setSources] = useState([]);
+  const [sourceScope, setSourceScope] = useState("latest");
+  const [selectedSourceFile, setSelectedSourceFile] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    fetchQuerySources()
+      .then((items) => {
+        setSources(items);
+        if (items[0]?.sourceFile) setSelectedSourceFile(items[0].sourceFile);
+      })
+      .catch(() => setSources([]));
+  }, []);
+
+  useEffect(() => {
+    fetchReports({
+      sourceScope,
+      sourceFile: sourceScope === "file" ? selectedSourceFile : ""
+    })
+      .then((data) => {
+        setReports(data.reports || []);
+        setSummary(data.summary || {});
+      })
+      .catch((e) => setError(e.message));
+  }, [sourceScope, selectedSourceFile]);
+
+  async function handleGenerate() {
+    try {
+      setLoading(true);
+      setError("");
+      const data = await generateReport({
+        template: selectedTemplate,
+        format,
+        sourceScope,
+        sourceFile: sourceScope === "file" ? selectedSourceFile : ""
+      });
+      const url = window.URL.createObjectURL(data.blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = data.filename;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      window.URL.revokeObjectURL(url);
+      setStatus(`Report downloaded: ${data.filename}`);
+    } catch (e) {
+      setError(e.response?.data?.error || e.message);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  return (
+    <section className="page">
+      <header className="page-header">
+        <h1>Generate Investigation Report</h1>
+        <p>Create court-ready reports from current evidence analysis</p>
+      </header>
+
+      <div className="split-grid">
+        <section className="panel">
+          <h3>Select Report Template</h3>
+          <div className="formats">
+            <label>
+              Scope:
+              <select value={sourceScope} onChange={(e) => setSourceScope(e.target.value)} style={{ marginLeft: "0.5rem" }}>
+                <option value="latest">Latest uploaded file</option>
+                <option value="file">Specific file</option>
+                <option value="all">All records</option>
+              </select>
+            </label>
+            {sourceScope === "file" && (
+              <label>
+                File:
+                <select
+                  value={selectedSourceFile}
+                  onChange={(e) => setSelectedSourceFile(e.target.value)}
+                  style={{ marginLeft: "0.5rem" }}
+                >
+                  {sources.map((item) => (
+                    <option key={item.sourceFile} value={item.sourceFile}>
+                      {item.sourceFile} ({item.count})
+                    </option>
+                  ))}
+                </select>
+              </label>
+            )}
+          </div>
+          {templates.map((template) => (
+            <label key={template} className="radio-row">
+              <input
+                type="radio"
+                name="template"
+                value={template}
+                checked={selectedTemplate === template}
+                onChange={(event) => setSelectedTemplate(event.target.value)}
+              />
+              <span>{template}</span>
+            </label>
+          ))}
+
+          <h3>Export Format</h3>
+          <div className="formats">
+            <label>
+              <input
+                type="radio"
+                checked={format === "PDF"}
+                onChange={() => setFormat("PDF")}
+              />
+              PDF
+            </label>
+            <label>
+              <input
+                type="radio"
+                checked={format === "CSV"}
+                onChange={() => setFormat("CSV")}
+              />
+              CSV
+            </label>
+          </div>
+
+          <button type="button" onClick={handleGenerate} disabled={loading}>
+            {loading ? "Generating..." : "Generate Report"}
+          </button>
+          {status && <p className="notice success">{status}</p>}
+          {error && <p className="error">{error}</p>}
+        </section>
+
+        <section className="panel">
+          <h3>Report Preview</h3>
+          <p><strong>Generated By:</strong> {officer}</p>
+          <p><strong>Date:</strong> {new Date().toLocaleDateString()}</p>
+          <p><strong>Scope:</strong> {sourceScope === "file" ? selectedSourceFile : sourceScope}</p>
+          <p><strong>Contains:</strong></p>
+          <ul>
+            <li>Answer Summary (from {summary.totalRecords || 0} records)</li>
+            <li>Crypto Flags ({summary.cryptoCount || 0})</li>
+            <li>Foreign Communications ({summary.foreignCount || 0})</li>
+          </ul>
+
+          <h3>Recent Reports</h3>
+          {(reports || []).map((report) => (
+            <div className="report-row" key={report.id}>
+              <p className="report-name">{report.name}</p>
+              <div className="report-meta">
+                <span>{new Date(report.createdAt).toLocaleString()}</span>
+                <span>{report.size}</span>
+              </div>
+            </div>
+          ))}
+        </section>
+      </div>
+    </section>
+  );
+}
+
+export default ReportsPage;
