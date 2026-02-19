@@ -1,11 +1,11 @@
 import { NavLink } from "react-router-dom";
 
 const navItems = [
-  { to: "/dashboard", label: "Dashboard" },
-  { to: "/upload", label: "Upload UFDR" },
-  { to: "/query", label: "Query Evidence" },
-  { to: "/links", label: "Link Analysis" },
-  { to: "/reports", label: "Reports" }
+  { to: "/dashboard", label: "Dashboard", tag: "MONITOR" },
+  { to: "/upload", label: "Upload UFDR", tag: "INGEST" },
+  { to: "/query", label: "Query Evidence", tag: "SEARCH" },
+  { to: "/links", label: "Link Analysis", tag: "GRAPH" },
+  { to: "/reports", label: "Reports", tag: "EXPORT" }
 ];
 
 function Sidebar({ officer, onLogout, onClose }) {
@@ -29,13 +29,15 @@ function Sidebar({ officer, onLogout, onClose }) {
                 `nav-item ${isActive ? "nav-item-active" : ""}`
               }
             >
-              {item.label}
+              <span>{item.label}</span>
+              <small>{item.tag}</small>
             </NavLink>
           ))}
         </nav>
       </div>
       <div className="sidebar-footer">
         <p>Logged in as</p>
+        <div className="officer-pill">{officer.slice(0, 1).toUpperCase()}</div>
         <h3>{officer}</h3>
         <button type="button" className="logout-btn" onClick={onLogout}>
           Logout
