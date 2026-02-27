@@ -56,13 +56,12 @@ function QueryPage() {
 
       <section className="panel">
         <h3>Ask an Investigation Question</h3>
-        <div className="formats">
+        <div className="scope-controls">
           <label>
             Query Scope:
             <select
               value={sourceScope}
               onChange={(event) => setSourceScope(event.target.value)}
-              style={{ marginLeft: "0.5rem" }}
             >
               <option value="latest">Latest uploaded file</option>
               <option value="file">Specific file</option>
@@ -75,7 +74,6 @@ function QueryPage() {
               <select
                 value={selectedSourceFile}
                 onChange={(event) => setSelectedSourceFile(event.target.value)}
-                style={{ marginLeft: "0.5rem" }}
               >
                 {sources.map((item) => (
                   <option key={item.sourceFile} value={item.sourceFile}>
@@ -86,15 +84,17 @@ function QueryPage() {
             </label>
           )}
         </div>
-        <textarea
-          rows={4}
-          value={question}
-          onChange={(event) => setQuestion(event.target.value)}
-          placeholder="What suspicious communications are in this uploaded file?"
-        />
-        <button type="button" onClick={analyze} disabled={loading}>
-          {loading ? "Analyzing..." : "Analyze Evidence"}
-        </button>
+        <div className="query-input">
+          <textarea
+            rows={4}
+            value={question}
+            onChange={(event) => setQuestion(event.target.value)}
+            placeholder="What suspicious communications are in this uploaded file?"
+          />
+          <button type="button" onClick={analyze} disabled={loading}>
+            {loading ? "Analyzing..." : "Analyze Evidence"}
+          </button>
+        </div>
 
         <div className="example-grid">
           {examples.map((item) => (

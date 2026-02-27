@@ -1,35 +1,53 @@
-﻿# UFDR AI Investigation Assistant
+# UFDR AI Investigation Assistant
 
-A full-stack digital forensics workspace for uploading UFDR-style evidence, running natural-language investigations, visualizing communication links, and generating downloadable reports.
+UFDR AI Investigation Assistant is a full-stack digital forensics workspace for ingesting UFDR-like exports, running natural-language evidence queries, visualizing communication links, and generating downloadable investigation reports.
 
-## What This Project Does
+## Table of Contents
+- [Overview](#overview)
+- [Features](#features)
+- [Tech Stack](#tech-stack)
+- [Project Structure](#project-structure)
+- [How It Works](#how-it-works)
+- [Prerequisites](#prerequisites)
+- [Quick Start](#quick-start)
+- [Configuration](#configuration)
+- [API Reference](#api-reference)
+- [Data Scope Model](#data-scope-model)
+- [Supported Input Mapping](#supported-input-mapping)
+- [Demo Data Behavior](#demo-data-behavior)
+- [Scripts](#scripts)
+- [Troubleshooting](#troubleshooting)
+- [Security Notes](#security-notes)
+- [Limitations](#limitations)
+- [Roadmap](#roadmap)
 
-- Ingests `XML`, `CSV`, and `JSON` UFDR-like exports
-- Normalizes records into a unified evidence model (`chat`, `call`, `contact`)
-- Auto-tags suspicious signals with intelligence flags (`CRYPTO`, `FOREIGN`, `LINK`, `LONG_CALL`, `PHONE_IN_TEXT`)
-- Supports natural-language querying with:
-  - Hugging Face model interpretation (when token is configured)
-  - Deterministic rule-based fallback (always available)
-- Provides dashboard metrics, recent activity, and link analysis graph data
-- Generates investigation reports in `PDF` or `CSV`
-- Includes demo seed data for first-run experience
+## Overview
+The platform is designed for investigation workflows where analysts need to:
+- Upload evidence exports (`.xml`, `.csv`, `.json`)
+- Normalize mixed schemas into a single evidence model
+- Detect suspicious patterns (crypto, foreign contacts, links, long calls)
+- Ask plain-English questions over evidence
+- Explore communication networks
+- Export reports for sharing
 
-## Architecture
-
-- `frontend/`: React + Vite UI
-- `backend/`: Node.js + Express API + MongoDB
-- `data/sample-ufdr.json`: optional demo evidence seed
-
-Flow:
-
-1. Upload file from UI (`/upload`)
-2. Backend parses and normalizes records
-3. Intelligence service attaches flags
-4. Records stored in MongoDB
-5. Query/dashboard/link/report endpoints operate on selected data scope
+## Features
+- Multi-format UFDR-like ingestion (`XML`, `CSV`, `JSON`)
+- Record normalization into unified fields (`chat`, `call`, `contact`)
+- Intelligence flagging:
+  - `CRYPTO`
+  - `FOREIGN`
+  - `LINK`
+  - `LONG_CALL`
+  - `PHONE_IN_TEXT`
+- Natural-language investigation queries with:
+  - Hugging Face interpretation/generation (if token is configured)
+  - Rule-based fallback (always available)
+- Dashboard metrics and recent activity feed
+- Link analysis graph with scope controls and edge filtering
+- PDF/CSV report generation
+- Auto-seeded demo dataset for first run
 
 ## Tech Stack
-
 ### Frontend
 - React 18
 - React Router
@@ -37,149 +55,13 @@ Flow:
 - Vite
 
 ### Backend
-- Express
-- Mongoose
-- Multer (file upload)
-- `csv-parser`, `xml2js` (parsing)
-- PDFKit (PDF reports)
-
-### Database
-- MongoDB
-
-## Prerequisites
-
-- Node.js 18+
-- npm 9+
-- MongoDB running locally or reachable via URI
-
-## Quick Start
-
-### 1. Clone and install
-
-```bash
-git clone https://github.com/Mahaselvan/ufdr.git
-cd ufdr
-```
-
-### 2. Backend setup
-
-```bash
-cd backend
-copy .env.example .env
-npm install
-npm run dev
-```
-
-Backend runs on `http://localhost:5000` by default.
-
-### 3. Frontend setup
-
-Open a second terminal:
-
-```bash
-cd frontend
-npm install
-npm run dev
-```
-
-Frontend runs on `http://localhost:5173`.
-
-## Environment Variables
-
-Defined in `backend/.env`:
-
-```env
-PORT=5000
-MONGO_URI=mongodb://127.0.0.1:27017/ufdr_ai
-HF_ACCESS_TOKEN=your_hf_token_here
-HF_MODEL=google/gemma-2-2b-it
-```
-
-Notes:
-
-- `HF_ACCESS_TOKEN` is optional, but required for model-based query interpretation and answer generation.
-- Without HF token, the app still works using built-in rule logic.
-- Never commit real secrets to Git history.
-
-## API Overview
-
-Base URL: `http://localhost:5000/api`
-
-- `POST /upload-ufdr`
-  - Multipart form field: `file`
-  - Accepts `.xml`, `.csv`, `.json`
-- `GET /dashboard`
-- `GET /activity`
-- `GET /links?sourceScope=latest|file|all&sourceFile=...`
-- `POST /query`
-  - Body: `{ question, sourceScope, sourceFile }`
-- `GET /query/examples`
-- `GET /query/sources`
-- `POST /query/cleanup-invalid`
-- `GET /reports?sourceScope=latest|file|all&sourceFile=...`
-- `POST /reports/generate`
-  - Body: `{ template, format, sourceScope, sourceFile, question }`
-
-Health check:
-
-- `GET /health`
-
-## Data Scope Model
-
-Used by Query, Link Analysis, and Reports:
-
-- `latest`: latest uploaded source file
-- `file`: specific selected source file
-- `all`: all records in collection
-
-If `latest` has no file metadata, backend gracefully falls back to `all`.
-
-## Intelligence Flags
-
-Current rule tags:
-
-- `CRYPTO`: crypto keywords or wallet-like patterns
-- `FOREIGN`: non-`+91` international numbers
-- `LINK`: URL detected
-- `LONG_CALL`: call duration >= 600 seconds
-- `PHONE_IN_TEXT`: phone pattern inside free text
-
-## Supported Input Mapping
-
-Parser normalizes common UFDR-like column/key variants to:
-
-- `type`, `from`, `to`, `timestamp`, `content`, `country`, `durationSeconds`, `source`, `sourceFile`, `metadata`
-
-Uploader keeps only supported record types (`chat`, `call`, `contact`) and drops empty records.
-
-## Demo Data Behavior
-
-- On fresh DB startup, backend auto-loads `data/sample-ufdr.json` as demo records.
-- Uploading a real file removes demo records (`isDemoData: true`) before inserting new evidence.
-
-Manual seed command:
-
-```bash
-cd backend
-npm run seed
-```
-
-## Scripts
-
-### Backend (`backend/package.json`)
-
-- `npm run dev` - start with nodemon
-- `npm start` - start with node
-- `npm run seed` - seed sample data
-
-### Frontend (`frontend/package.json`)
-
-- `npm run dev` - dev server
-- `npm run build` - production build
-- `npm run preview` - preview build locally
+- Node.js + Express
+- MongoDB + Mongoose
+- Multer (file uploads)
+- `csv-parser` + `xml2js` (file parsing)
+- PDFKit (report generation)
 
 ## Project Structure
-
 ```text
 ufdr/
   backend/
@@ -192,33 +74,186 @@ ufdr/
       utils/
     uploads/
     .env.example
+    package.json
   frontend/
     src/
       api/
       components/
       pages/
       styles/
+    package.json
   data/
     sample-ufdr.json
+  README.md
 ```
 
-## Security and Git Hygiene
+## How It Works
+1. Upload a UFDR-like export from the frontend (`/upload`).
+2. Backend parses and normalizes records into a common schema.
+3. Intelligence service tags suspicious indicators.
+4. Records are stored in MongoDB.
+5. Query, dashboard, link analysis, and report modules operate on selected data scope.
 
-- Keep `backend/.env` out of version control.
-- Use placeholder values only in `backend/.env.example`.
-- If a secret is ever committed, rotate it and rewrite Git history before pushing.
+## Prerequisites
+- Node.js `18+`
+- npm `9+`
+- MongoDB instance (local or remote)
 
-## Current Limitations
+## Quick Start
+### 1. Clone
+```bash
+git clone https://github.com/Mahaselvan/ufdr.git
+cd ufdr
+```
 
-- Login page is showcase-only (no real authentication/authorization)
-- No role-based access control
-- Query understanding quality depends on model availability and prompt behavior
-- Large UFDR datasets may need pagination/streaming for scale
+### 2. Setup and run backend
+```bash
+cd backend
+copy .env.example .env
+npm install
+npm run dev
+```
+Backend default: `http://localhost:5000`
 
-## Suggested Next Improvements
+### 3. Setup and run frontend (new terminal)
+```bash
+cd frontend
+npm install
+npm run dev
+```
+Frontend default: `http://localhost:5173`
 
-1. Add real authentication (JWT/session + RBAC)
-2. Add pagination and server-side filtering for large queries
-3. Add test coverage (unit + integration + API contract tests)
-4. Add Docker Compose for one-command startup
-5. Add CI checks (lint, build, tests, secret scan)
+## Configuration
+Set values in `backend/.env`:
+
+```env
+PORT=5000
+MONGO_URI=mongodb://127.0.0.1:27017/ufdr_ai
+HF_ACCESS_TOKEN=xxxxxxxxxxxxxxxxxxxxxxxx
+HF_MODEL=google/gemma-2-2b-it
+```
+
+Notes:
+- `HF_ACCESS_TOKEN` is optional.
+- If no token is provided, query interpretation and answer generation fall back to deterministic rule logic.
+- Frontend API URL is currently hardcoded in `frontend/src/api/client.js` as `http://localhost:5000/api`.
+
+## API Reference
+Base URL: `http://localhost:5000/api`
+
+### Health
+- `GET /health`
+
+### Upload
+- `POST /upload-ufdr`
+- Content type: `multipart/form-data`
+- Field: `file`
+- Supported extensions: `.xml`, `.csv`, `.json`
+
+### Dashboard + Graph
+- `GET /dashboard`
+- `GET /activity`
+- `GET /links?sourceScope=latest|file|all&sourceFile=<name>`
+
+### Query
+- `POST /query`
+- Body:
+```json
+{
+  "question": "Show me foreign communications",
+  "sourceScope": "latest",
+  "sourceFile": ""
+}
+```
+- `GET /query/examples`
+- `GET /query/sources`
+- `POST /query/cleanup-invalid`
+
+### Reports
+- `GET /reports?sourceScope=latest|file|all&sourceFile=<name>`
+- `POST /reports/generate`
+- Body:
+```json
+{
+  "template": "Full Investigation Report",
+  "format": "PDF",
+  "sourceScope": "latest",
+  "sourceFile": "",
+  "question": "Summarize evidence in scope"
+}
+```
+
+## Data Scope Model
+Used across query, links, and reports:
+- `latest`: latest uploaded source file
+- `file`: specific selected source file
+- `all`: full dataset
+
+Fallback behavior:
+- If `latest` cannot resolve a source file, backend gracefully downgrades to `all`.
+
+## Supported Input Mapping
+Parser maps common UFDR-like fields to this normalized model:
+- `type`
+- `from`
+- `to`
+- `timestamp`
+- `content`
+- `country`
+- `durationSeconds`
+- `source`
+- `sourceFile`
+- `metadata`
+
+Only `chat`, `call`, and `contact` records are persisted.
+Rows with no meaningful values are discarded.
+
+## Demo Data Behavior
+- On fresh database startup, backend seeds `data/sample-ufdr.json` as demo records.
+- Demo records are marked with `isDemoData: true`.
+- When a real upload is ingested, demo records are removed before insert.
+
+Manual seeding:
+```bash
+cd backend
+npm run seed
+```
+
+## Scripts
+### Backend (`backend/package.json`)
+- `npm run dev` - start server with nodemon
+- `npm start` - start server with node
+- `npm run seed` - seed demo dataset
+
+### Frontend (`frontend/package.json`)
+- `npm run dev` - start Vite dev server
+- `npm run build` - build production bundle
+- `npm run preview` - preview built bundle
+
+## Troubleshooting
+- Upload says "No supported records found":
+  - Ensure records can map to `chat`, `call`, or `contact` and include at least one meaningful field.
+- Query returns empty results:
+  - Try `sourceScope=all` to verify records exist outside latest file scope.
+- Frontend cannot reach backend:
+  - Confirm backend is running on `:5000` and that `frontend/src/api/client.js` base URL matches.
+- No AI answer quality improvement:
+  - Configure valid `HF_ACCESS_TOKEN` and verify model accessibility.
+
+## Security Notes
+- Never commit real secrets in `backend/.env`.
+- Keep only placeholder values in `backend/.env.example`.
+- If a secret is exposed, rotate it and rewrite Git history before pushing.
+
+## Limitations
+- Login is local showcase mode (no real authentication/authorization)
+- No RBAC or audit trails
+- Result sets are capped in backend endpoints (for responsiveness)
+- Large-scale cases may require pagination and indexing strategy improvements
+
+## Roadmap
+1. Add real auth (`JWT/session`) and RBAC.
+2. Add pagination + advanced server-side filtering.
+3. Add tests (unit, integration, API contract).
+4. Add Docker Compose for one-command startup.
+5. Add CI checks (lint, build, tests, secret scan).

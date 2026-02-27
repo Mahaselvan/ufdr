@@ -34,6 +34,7 @@ function UploadPage() {
 
       <section className="panel">
         <h3>Select UFDR File</h3>
+        <p className="section-note">Accepted formats: XML, CSV, JSON</p>
         <div className="upload-box">
           <input
             type="file"
@@ -44,6 +45,13 @@ function UploadPage() {
             {loading ? "Processing..." : "Upload & Parse"}
           </button>
         </div>
+
+        {file && (
+          <div className="upload-meta">
+            <span className="file-pill">File: {file.name}</span>
+            <span className="file-pill">Size: {(file.size / 1024).toFixed(1)} KB</span>
+          </div>
+        )}
 
         <div className="formats">
           <span>Supported: XML</span>

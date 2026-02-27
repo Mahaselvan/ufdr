@@ -77,10 +77,10 @@ function ReportsPage({ officer }) {
       <div className="split-grid">
         <section className="panel">
           <h3>Select Report Template</h3>
-          <div className="formats">
+          <div className="scope-controls">
             <label>
               Scope:
-              <select value={sourceScope} onChange={(e) => setSourceScope(e.target.value)} style={{ marginLeft: "0.5rem" }}>
+              <select value={sourceScope} onChange={(e) => setSourceScope(e.target.value)}>
                 <option value="latest">Latest uploaded file</option>
                 <option value="file">Specific file</option>
                 <option value="all">All records</option>
@@ -92,7 +92,6 @@ function ReportsPage({ officer }) {
                 <select
                   value={selectedSourceFile}
                   onChange={(e) => setSelectedSourceFile(e.target.value)}
-                  style={{ marginLeft: "0.5rem" }}
                 >
                   {sources.map((item) => (
                     <option key={item.sourceFile} value={item.sourceFile}>

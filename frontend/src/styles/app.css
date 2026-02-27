@@ -206,6 +206,14 @@ select {
   font-size: 1.22rem;
 }
 
+.page-header {
+  background: linear-gradient(140deg, #f9fbff 0%, #f3f8ff 100%);
+  border: 1px solid #dce6f5;
+  border-radius: var(--radius-panel);
+  padding: 1rem 1.1rem 1rem 1.25rem;
+  box-shadow: var(--shadow-soft);
+}
+
 .panel,
 .stat-card,
 .mini-card {
@@ -398,6 +406,63 @@ select:focus-visible,
   color: #1f469d;
   border: 1px solid #c9daf8;
   box-shadow: none;
+}
+
+.scope-controls {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(220px, 1fr));
+  gap: 0.85rem;
+  margin-bottom: 0.75rem;
+}
+
+.scope-controls label {
+  display: grid;
+  gap: 0.34rem;
+  color: #39537f;
+  font-weight: 600;
+}
+
+.scope-controls select {
+  margin-left: 0;
+}
+
+.query-input {
+  display: grid;
+  gap: 0.7rem;
+}
+
+.section-note {
+  margin: 0.2rem 0 0;
+  color: var(--text-muted);
+  font-size: 0.95rem;
+}
+
+.file-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  border-radius: 999px;
+  border: 1px solid #c9d9f1;
+  background: #f4f8ff;
+  color: #25487c;
+  padding: 0.28rem 0.68rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.upload-box {
+  flex-wrap: wrap;
+}
+
+.upload-meta {
+  margin-top: 0.7rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.top-connections-title {
+  margin-top: 1rem;
 }
 
 .table-wrap {
@@ -679,6 +744,7 @@ tbody tr:hover {
   .card-grid { grid-template-columns: 1fr; }
   .mini-grid { grid-template-columns: 1fr; }
   .graph-toolbar { grid-template-columns: 1fr; }
+  .scope-controls { grid-template-columns: 1fr; }
 
   .brand h1 { font-size: 1.2rem; }
   .nav-item { font-size: 0.95rem; }

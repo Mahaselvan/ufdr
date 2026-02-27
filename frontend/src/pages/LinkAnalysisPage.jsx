@@ -137,10 +137,10 @@ function LinkAnalysisPage() {
       </header>
 
       <section className="panel panel-highlight">
-        <div className="formats">
+        <div className="scope-controls">
           <label>
             Scope:
-            <select value={sourceScope} onChange={(e) => setSourceScope(e.target.value)} style={{ marginLeft: "0.5rem" }}>
+            <select value={sourceScope} onChange={(e) => setSourceScope(e.target.value)}>
               <option value="latest">Latest uploaded file</option>
               <option value="file">Specific file</option>
               <option value="all">All records</option>
@@ -152,7 +152,6 @@ function LinkAnalysisPage() {
               <select
                 value={selectedSourceFile}
                 onChange={(e) => setSelectedSourceFile(e.target.value)}
-                style={{ marginLeft: "0.5rem" }}
               >
                 {sources.map((item) => (
                   <option key={item.sourceFile} value={item.sourceFile}>
@@ -328,7 +327,7 @@ function LinkAnalysisPage() {
             </div>
           )}
 
-          <h4 style={{ marginTop: "1rem" }}>Top Connections</h4>
+          <h4 className="top-connections-title">Top Connections</h4>
           <div className="edge-list">
             {stats.topEdges.map((edge) => (
               <div key={`top-${edge.source}-${edge.target}`} className="edge-item">
