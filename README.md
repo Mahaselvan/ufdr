@@ -2,6 +2,7 @@
 
 UFDR AI Investigation Assistant is a full-stack digital forensics workspace for ingesting UFDR-like exports, running natural-language evidence queries, visualizing communication links, and generating downloadable investigation reports.
 
+<<<<<<< HEAD
 ## Table of Contents
 - [Overview](#overview)
 - [Features](#features)
@@ -30,6 +31,57 @@ The platform is designed for investigation workflows where analysts need to:
 - Explore communication networks
 - Export reports for sharing
 
+=======
+## Pages
+
+### Login
+<img width="1919" height="1079" alt="image" src="https://github.com/user-attachments/assets/2e76ed2a-d950-4eea-9b61-5298eed5b3fd" />
+
+### Dashboard
+<img width="1918" height="1072" alt="image" src="https://github.com/user-attachments/assets/d67fe2b2-68a6-4647-bf51-3dc593a75f9b" />
+
+### UFDR Upload
+<img width="1919" height="1073" alt="image" src="https://github.com/user-attachments/assets/fe5a3a6c-e289-46c0-90b9-ccd5211d45c5" />
+
+### Query Evidence 
+<img width="1918" height="1069" alt="image" src="https://github.com/user-attachments/assets/517171d1-3e59-4134-8b0a-97c225aa5d75" />
+
+### Link Analysis
+<img width="1919" height="1069" alt="image" src="https://github.com/user-attachments/assets/5f9641b6-7e70-4754-9311-14ff9022cb9b" />
+
+### Report Generation
+<img width="1917" height="1072" alt="image" src="https://github.com/user-attachments/assets/551c8e9b-a787-4b7e-a426-b124bedc1fc0" />
+
+
+## Table of Contents
+- [Overview](#overview)
+- [Features](#features)
+- [Tech Stack](#tech-stack)
+- [Project Structure](#project-structure)
+- [How It Works](#how-it-works)
+- [Prerequisites](#prerequisites)
+- [Quick Start](#quick-start)
+- [Configuration](#configuration)
+- [API Reference](#api-reference)
+- [Data Scope Model](#data-scope-model)
+- [Supported Input Mapping](#supported-input-mapping)
+- [Demo Data Behavior](#demo-data-behavior)
+- [Scripts](#scripts)
+- [Troubleshooting](#troubleshooting)
+- [Security Notes](#security-notes)
+- [Limitations](#limitations)
+- [Roadmap](#roadmap)
+
+## Overview
+The platform is designed for investigation workflows where analysts need to:
+- Upload evidence exports (`.xml`, `.csv`, `.json`)
+- Normalize mixed schemas into a single evidence model
+- Detect suspicious patterns (crypto, foreign contacts, links, long calls)
+- Ask plain-English questions over evidence
+- Explore communication networks
+- Export reports for sharing
+
+>>>>>>> 538dc6d77ad242db7ba0f2376b7f3a63db2f3763
 ## Features
 - Multi-format UFDR-like ingestion (`XML`, `CSV`, `JSON`)
 - Record normalization into unified fields (`chat`, `call`, `contact`)
